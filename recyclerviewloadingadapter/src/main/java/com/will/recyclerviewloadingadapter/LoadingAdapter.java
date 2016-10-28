@@ -158,9 +158,6 @@ public abstract class LoadingAdapter<T> extends RecyclerView.Adapter<RecyclerVie
      * @return 添加后data的size
      */
     public int update(List<T> newData){
-        if(newData.size() == 0){
-            return -1;
-        }
         data.addAll(newData);
         update(true);
         return data.size();
