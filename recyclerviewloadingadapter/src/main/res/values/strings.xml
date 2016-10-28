@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">RecyclerViewLoadingAdapter</string>
+    <string name="loading_failed">Loading Failed,Click To Reload</string>
+</resources>
