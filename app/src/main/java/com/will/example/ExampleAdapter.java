@@ -1,5 +1,6 @@
 package com.will.example;
 
+import android.view.animation.Animation;
 import android.widget.Toast;
 
 import com.will.recyclerviewloadingadapter.BaseRecyclerViewHolder;
@@ -24,11 +25,13 @@ public class ExampleAdapter extends LoadingAdapter<String> {
             }
         });
     }
+    //数据与相应的view绑定
     @Override
     public void convert(BaseRecyclerViewHolder holder, String item) {
         holder.setText(R.id.item_text,item);
     }
 
+    //无论加载结果如何，都应调用update方法
     @Override
     public void loadData(final int page) {
         getRecyclerView().postDelayed(new Runnable() {
@@ -43,6 +46,7 @@ public class ExampleAdapter extends LoadingAdapter<String> {
         },1000);
     }
 
+    //是否继续调用loadData方法加载
     @Override
     public boolean hasMoreData() {
         return getPageIndex()*20 <= 100;
@@ -55,4 +59,9 @@ public class ExampleAdapter extends LoadingAdapter<String> {
         return list;
     }
 
+    @Override
+    protected Animation getItemAnimation() {
+        //自定义animation
+        return super.getItemAnimation();
+    }
 }

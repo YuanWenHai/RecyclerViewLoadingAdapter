@@ -271,7 +271,7 @@ public abstract class LoadingAdapter<T> extends RecyclerView.Adapter<RecyclerVie
      * <p>不过我总觉得这可能会出现一些问题...</p>
      * @param view 将要执行动画的View
      */
-    protected void animate(final View view){
+    private void animate(final View view){
         view.setVisibility(View.INVISIBLE);
         getRecyclerView().postDelayed(new Runnable() {
             @Override
@@ -286,7 +286,7 @@ public abstract class LoadingAdapter<T> extends RecyclerView.Adapter<RecyclerVie
      * 重写本方法可使用自定义itemAnimation
      * @return animation
      */
-    private Animation getItemAnimation() {
+    protected Animation getItemAnimation() {
         TranslateAnimation translateAnimation = new TranslateAnimation(getRecyclerView().getWidth(),getRecyclerView().getX(),0,0);
         translateAnimation.setDuration(300);
         return translateAnimation;
