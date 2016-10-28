@@ -66,7 +66,7 @@ new LoadingAdapter(R.layout.item,R.layout.loading,R.layout.loading_failed);//使
 
 
 
-## Dependency
+# Dependency
 Add it in your root build.gradle at the end of repositories:
 ```
 allprojects {
