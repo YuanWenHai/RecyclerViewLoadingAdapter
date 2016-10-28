@@ -63,3 +63,23 @@ public class ExampleAdapter extends LoadingAdapter<String> {
 new LoadingAdapter(R.layout.item);//使用默认加载和失败view
 new LoadingAdapter(R.layout.item,R.layout.loading,R.layout.loading_failed);//使用自定义
 ```
+
+
+
+# Dependency
+Add it in your root build.gradle at the end of repositories:
+```
+allprojects {
+		repositories {
+			...
+			maven { url "https://jitpack.io" }
+		}
+	}
+  ```
+  Add the dependency:
+  ```
+  dependencies {
+	        compile 'com.github.YuanWenHai:RecyclerViewLoadingAdapter:1.1'
+	}
+  ```
+
