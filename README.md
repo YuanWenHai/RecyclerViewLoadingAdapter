@@ -79,7 +79,7 @@ allprojects {
   Add the dependency:
   ```
   dependencies {
-	        compile 'com.github.YuanWenHai:RecyclerViewLoadingAdapter:1.1'
+	        compile 'com.github.YuanWenHai:RecyclerViewLoadingAdapter:1.2'
 	}
   ```
 
