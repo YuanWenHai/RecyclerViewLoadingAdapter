@@ -95,6 +95,8 @@ public abstract class LoadingAdapter<T> extends RecyclerView.Adapter<RecyclerVie
                 isLoading = true;
                 loadData(pageIndex);
             }
+        }else if(loadingListener != null){
+            loadingListener.onFailure();
         }
     }
 
@@ -200,6 +202,23 @@ public abstract class LoadingAdapter<T> extends RecyclerView.Adapter<RecyclerVie
     public int getPageIndex(){
         return pageIndex;
     }
+    public void setPageIndex(int i ){
+        pageIndex = i;
+    }
+
+    /**
+     * 刷新所有数据，并使用loading item view
+     */
+    public void refreshDataWithLoadingView(){
+        if(!isLoading()){
+            data.clear();
+            pageIndex = 1;
+            lastAnimatedItemIndex = -1;
+            notifyDataSetChanged();
+        }else if(loadingListener != null){
+            loadingListener.onFailure();
+        }
+    }
     /**
      * 是否正在加载，配合swipeRefreshLayout时调用此方法，避免加载冲突
      * @return isLoading
@@ -218,14 +237,14 @@ public abstract class LoadingAdapter<T> extends RecyclerView.Adapter<RecyclerVie
     }
 
     /**
-     * 清除已有数据并重新调用loadData
+     * 清除已有数据并重新调用loadData,不会调用loading item动画
      */
     public void refreshData(){
         if(!isLoading()){
             data.clear();
             pageIndex = 1;
             lastAnimatedItemIndex = -1;
-            loadData(1);
+            loadData(pageIndex);
         }else if(loadingListener != null){
             loadingListener.onFailure();
         }
