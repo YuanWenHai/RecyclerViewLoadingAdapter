@@ -1,5 +1,6 @@
 package com.will.recyclerviewloadingadapter;
 
+import android.support.annotation.LayoutRes;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,19 +17,18 @@ import java.util.List;
  * <p>到末尾自动加载更多，加载更多失败后，即{@link #update(boolean)}返回false后,将判定为加载失败
  * 此时将在末尾展示loadingFailedView</p>
  * <p>loadingFailedView的点击默认实现为重新加载，可以通过{@link #setOnReloadListener(OnReloadClickListener)}替换</p>
- * <p>{@link #refreshData()}刷新内容</p>
  * <p>{@link #useItemAnimation(boolean)}可以使用/停用ItemAnimation.</p>
  */
-public abstract class LoadingAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public abstract class BaseLoadingAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_ITEM = 0;
     private static final int TYPE_LOADING = 1;
     private static final int TYPE_LOADING_FAILED = 2;
-    private ArrayList<T> data;
+    private ArrayList<T> mData;
     private int pageIndex = 1;
     private boolean isLoading;
     private OnItemClickListener itemClickListener;
     private OnReloadClickListener reloadClickListener;
-    private OnLoadingListener loadingListener;
+    private OnLoadingListener onLoadingListener;
     private int loadingViewRes;
     private int itemLayoutRes;
     private int loadingFailedViewRes;
@@ -37,13 +37,13 @@ public abstract class LoadingAdapter<T> extends RecyclerView.Adapter<RecyclerVie
     private RecyclerView mRecyclerView;
 
     private int lastAnimatedItemIndex = -1;
-    public LoadingAdapter(int itemLayoutRes, int loadingViewRes, int loadingFailedViewRes){
-        data = new ArrayList<>();
+    public BaseLoadingAdapter(@LayoutRes int itemLayoutRes,@LayoutRes int loadingViewRes,@LayoutRes int loadingFailedViewRes){
+        mData = new ArrayList<>();
         this.itemLayoutRes = itemLayoutRes;
         this.loadingViewRes = loadingViewRes;
         this.loadingFailedViewRes = loadingFailedViewRes;
     }
-    public LoadingAdapter(int itemLayoutRes){
+    public BaseLoadingAdapter(@LayoutRes int itemLayoutRes){
         this(itemLayoutRes,R.layout.loading_view,R.layout.loading_failed_view);
     }
 
@@ -65,13 +65,24 @@ public abstract class LoadingAdapter<T> extends RecyclerView.Adapter<RecyclerVie
 
     public abstract void convert(BaseRecyclerViewHolder holder, T item );
 
-
-
+    public void load(boolean interrupt,OnLoadingListener onLoadingListener){
+        this.onLoadingListener = onLoadingListener;
+        if(interrupt || !isLoading){
+            isLoading = false;
+            mData.clear();
+            notifyDataSetChanged();
+            pageIndex = 1;
+            lastAnimatedItemIndex = -1;
+            loadData(pageIndex);
+        }else{
+            onLoadingListener.onResult(false);
+        }
+    }
 
 
     @Override
     public int getItemViewType(int position){
-        if(hasMoreData() && position == data.size() ){
+        if(hasMoreData() && position == mData.size()){
             return loadingSuccessful ? TYPE_LOADING : TYPE_LOADING_FAILED;
         }
         return TYPE_ITEM;
@@ -79,7 +90,7 @@ public abstract class LoadingAdapter<T> extends RecyclerView.Adapter<RecyclerVie
 
     @Override
     public int getItemCount(){
-        return hasMoreData() ? data.size()+1 : data.size();
+        return hasMoreData()&&pageIndex!=1 ? mData.size()+1 : mData.size();
     }
 
     @Override
@@ -89,14 +100,12 @@ public abstract class LoadingAdapter<T> extends RecyclerView.Adapter<RecyclerVie
                 animate(holder.itemView);
                 lastAnimatedItemIndex = position;
             }
-            convert((BaseRecyclerViewHolder) holder,data.get(position));
-        }else if(holder instanceof LoadingAdapter.LoadingViewHolder) {
+            convert((BaseRecyclerViewHolder) holder, mData.get(position));
+        }else if(holder instanceof BaseLoadingAdapter.LoadingViewHolder) {
             if(!isLoading){
                 isLoading = true;
                 loadData(pageIndex);
             }
-        }else if(loadingListener != null){
-            loadingListener.onFailure();
         }
     }
 
@@ -117,7 +126,7 @@ public abstract class LoadingAdapter<T> extends RecyclerView.Adapter<RecyclerVie
                 @Override
                 public void onClick(View v) {
                     if(itemClickListener != null){
-                        itemClickListener.onItemClicked(data.get(holder.getAdapterPosition()),holder);
+                        itemClickListener.onItemClicked(mData.get(holder.getAdapterPosition()),holder);
                     }
                 }
             });
@@ -159,10 +168,10 @@ public abstract class LoadingAdapter<T> extends RecyclerView.Adapter<RecyclerVie
      * @param newData 新数据
      * @return 添加后data的size
      */
-    public int update(List<T> newData){
-        data.addAll(newData);
+    public int update(ArrayList<T> newData){
+        mData.addAll(newData);
         update(true);
-        return data.size();
+        return mData.size();
     }
 
     /**
@@ -170,23 +179,19 @@ public abstract class LoadingAdapter<T> extends RecyclerView.Adapter<RecyclerVie
      * @param which 成功/失败,若为失败，则不递增load次数
      */
     public void update(boolean which){
+        if(onLoadingListener != null && pageIndex == 1){
+            onLoadingListener.onResult(which);
+        }
         isLoading = false;
         loadingSuccessful = which;
         if(which){
             pageIndex++;
         }
-        if(loadingListener != null){
-            if(which){
-                loadingListener.onSuccess();
-            }else{
-                loadingListener.onFailure();
-            }
-        }
         mRecyclerView.post(new Runnable() {
             @Override
             public void run() {
                 notifyDataSetChanged();
-                if(!loadingSuccessful){
+                if(!loadingSuccessful && pageIndex != 1){
                     mRecyclerView.smoothScrollToPosition(getItemCount()-1);
                 }
             }
@@ -196,7 +201,7 @@ public abstract class LoadingAdapter<T> extends RecyclerView.Adapter<RecyclerVie
         return mRecyclerView;
     }
     public List<T> getData(){
-        return data;
+        return mData;
     }
 
     public int getPageIndex(){
@@ -206,48 +211,13 @@ public abstract class LoadingAdapter<T> extends RecyclerView.Adapter<RecyclerVie
         pageIndex = i;
     }
 
-    /**
-     * 刷新所有数据，并使用loading item view
-     */
-    public void refreshDataWithLoadingView(){
-        if(!isLoading()){
-            data.clear();
-            pageIndex = 1;
-            lastAnimatedItemIndex = -1;
-            notifyDataSetChanged();
-        }else if(loadingListener != null){
-            loadingListener.onFailure();
-        }
-    }
+
     /**
      * 是否正在加载，配合swipeRefreshLayout时调用此方法，避免加载冲突
      * @return isLoading
      */
     public boolean isLoading(){
         return isLoading;
-    }
-    /**
-     * 清除已有数据重新获得，刷新显示
-     * @param newData data
-     */
-    public void refreshData(List<T> newData){
-        data.clear();
-        pageIndex = 1;
-        update(newData);
-    }
-
-    /**
-     * 清除已有数据并重新调用loadData,不会调用loading item动画
-     */
-    public void refreshData(){
-        if(!isLoading()){
-            data.clear();
-            pageIndex = 1;
-            lastAnimatedItemIndex = -1;
-            loadData(pageIndex);
-        }else if(loadingListener != null){
-            loadingListener.onFailure();
-        }
     }
 
     public void setOnItemClickListener(OnItemClickListener listener){
@@ -269,17 +239,9 @@ public abstract class LoadingAdapter<T> extends RecyclerView.Adapter<RecyclerVie
         void onReload();
     }
     public interface OnLoadingListener{
-        void onSuccess();
-        void onFailure();
+        void onResult(boolean which);
     }
 
-    /**
-     * 因为所有的加载行为最后都要调用{@link #update(boolean)},故将callback添加在彼处
-     * @param listener listener
-     */
-    public void setOnLoadingListener(OnLoadingListener listener){
-        loadingListener = listener;
-    }
     /**
      * 为item添加动画。此处使用了延时队列，主要是为了保证最先出现的几个ItemAnimation的次序性
      * <p>但同时的，因为有延时存在，会出现ItemView已经展示完毕动画才开始的情况，故在将任务加入队列时隐藏该view,在队列任务执行时

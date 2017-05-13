@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.will.recyclerviewloadingadapter.LoadingAdapter;
+import com.will.recyclerviewloadingadapter.BaseLoadingAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,26 +23,13 @@ public class MainActivity extends AppCompatActivity {
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                refreshLayout.postDelayed(new Runnable() {
+                adapter.load(false, new BaseLoadingAdapter.OnLoadingListener() {
                     @Override
-                    public void run() {
-                        adapter.refreshData();
+                    public void onResult(boolean which) {
+                        refreshLayout.setRefreshing(false);
                     }
-                },1000);
-
+                });
             }
         });
-        adapter.setOnLoadingListener(new LoadingAdapter.OnLoadingListener() {
-            @Override
-            public void onSuccess() {
-                refreshLayout.setRefreshing(false);
-            }
-
-            @Override
-            public void onFailure() {
-                refreshLayout.setRefreshing(false);
-            }
-        });
-
     }
 }

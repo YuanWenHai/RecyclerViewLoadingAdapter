@@ -3,8 +3,8 @@ package com.will.example;
 import android.view.animation.Animation;
 import android.widget.Toast;
 
+import com.will.recyclerviewloadingadapter.BaseLoadingAdapter;
 import com.will.recyclerviewloadingadapter.BaseRecyclerViewHolder;
-import com.will.recyclerviewloadingadapter.LoadingAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.Random;
  * Created by will on 2016/10/28.
  */
 
-public class ExampleAdapter extends LoadingAdapter<String> {
+public class ExampleAdapter extends BaseLoadingAdapter<String> {
 
     public ExampleAdapter(){
         super(R.layout.item);

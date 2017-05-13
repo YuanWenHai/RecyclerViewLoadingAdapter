@@ -22,6 +22,6 @@
             android:textSize="20sp"
             android:textColor="@color/black"
             android:layout_height="match_parent"
-            android:text="@string/loading_failed"/>
+            android:text="@string/recycler_loading_adapter_loading_failed"/>
     </LinearLayout>
 </android.support.v7.widget.CardView>
