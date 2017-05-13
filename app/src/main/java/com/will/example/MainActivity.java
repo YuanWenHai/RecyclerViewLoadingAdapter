@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         RecyclerView recyclerView = (RecyclerView)findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        final ExampleAdapter adapter = new ExampleAdapter();
+        final AsyncAdapter adapter = new AsyncAdapter();
         recyclerView.setAdapter(adapter);
         adapter.useItemAnimation(true);
         final SwipeRefreshLayout refreshLayout = (SwipeRefreshLayout) findViewById(R.id.refresh_layout);

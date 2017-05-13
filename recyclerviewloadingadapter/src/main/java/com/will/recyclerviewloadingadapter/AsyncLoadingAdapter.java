@@ -1,7 +1,11 @@
 package com.will.recyclerviewloadingadapter;
 
+import android.os.Handler;
+import android.os.Looper;
+import android.support.annotation.LayoutRes;
+
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.WeakHashMap;
 
 import okhttp3.Call;
@@ -18,17 +22,18 @@ public abstract class AsyncLoadingAdapter<T> extends BaseLoadingAdapter<T> {
     private final OkHttpClient mClient;
     private final OnAsyncTaskListener mAsyncTaskListener = new OnAsyncTaskListener();
     private final WeakHashMap<Call,Boolean> mCalls = new WeakHashMap<>();
-    public AsyncLoadingAdapter(int itemRes,OkHttpClient client){
+    private final Handler mHandler = new Handler(Looper.myLooper());
+    public AsyncLoadingAdapter(@LayoutRes int itemRes, OkHttpClient client){
         super(itemRes);
         mClient = client;
     }
-    public AsyncLoadingAdapter(int itemRes,int loadingRes,int loadingFailedRes,OkHttpClient client){
+    public AsyncLoadingAdapter(@LayoutRes int itemRes,@LayoutRes int loadingRes,@LayoutRes int loadingFailedRes,OkHttpClient client){
         super(itemRes,loadingRes,loadingFailedRes);
         mClient = client;
     }
 
     public abstract String getTargetUrl(int page);
-    public abstract ArrayList<T> getCorrespondingData(Response response);
+    public abstract List<T> getCorrespondingData(Response response);
 
     @Override
     public void loadData(int page) {
@@ -55,15 +60,26 @@ public abstract class AsyncLoadingAdapter<T> extends BaseLoadingAdapter<T> {
 
     private class OnAsyncTaskListener implements Callback{
         @Override
-        public void onFailure(Call call, IOException e) {
-            mCalls.remove(call);
-            update(false);
+        public void onFailure(final Call call, IOException e) {
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    mCalls.remove(call);
+                    update(false);
+                }
+            });
+
         }
 
         @Override
-        public void onResponse(Call call, Response response) throws IOException {
-            mCalls.remove(call);
-            update(getCorrespondingData(response));
+        public void onResponse(final Call call, final Response response) throws IOException {
+           mHandler.post(new Runnable() {
+               @Override
+               public void run() {
+                   mCalls.remove(call);
+                   update(getCorrespondingData(response));
+               }
+           });
         }
     }
 }

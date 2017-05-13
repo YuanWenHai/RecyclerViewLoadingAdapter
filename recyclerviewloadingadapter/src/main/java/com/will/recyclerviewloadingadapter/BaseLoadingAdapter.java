@@ -168,7 +168,7 @@ public abstract class BaseLoadingAdapter<T> extends RecyclerView.Adapter<Recycle
      * @param newData 新数据
      * @return 添加后data的size
      */
-    public int update(ArrayList<T> newData){
+    public int update(List<T> newData){
         mData.addAll(newData);
         update(true);
         return mData.size();

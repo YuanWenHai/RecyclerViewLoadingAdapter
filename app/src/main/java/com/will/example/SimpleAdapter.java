@@ -14,9 +14,9 @@ import java.util.Random;
  * Created by will on 2016/10/28.
  */
 
-public class ExampleAdapter extends BaseLoadingAdapter<String> {
+public class SimpleAdapter extends BaseLoadingAdapter<String> {
 
-    public ExampleAdapter(){
+    public SimpleAdapter(){
         super(R.layout.item);
         setOnItemClickListener(new OnItemClickListener() {
             @Override
