@@ -102,7 +102,7 @@ var activeTableTab = "activeTableTab";
 <li>android.support.v7.widget.RecyclerView.Adapter&lt;android.support.v7.widget.RecyclerView.ViewHolder&gt;</li>
 <li>
 <ul class="inheritance">
-<li>com.will.recyclerviewloadingadapter.LoadingAdapter&lt;T&gt;</li>
+<li>com.will.recyclerviewloadingadapter.BaseLoadingAdapter&lt;T&gt;</li>
 </ul>
 </li>
 </ul>
@@ -119,7 +119,7 @@ extends android.support.v7.widget.RecyclerView.Adapter&lt;android.support.v7.wid
  <p>一个简单的RecyclerViewAdapter</p>
  <p>到末尾自动加载更多，加载更多失败后，即<a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.html#update-boolean-"><code>update(boolean)</code></a>返回false后,将判定为加载失败
  此时将在末尾展示loadingFailedView</p>
- <p>loadingFailedView的点击默认实现为重新加载，可以通过<a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.html#setOnReloadListener-com.will.recyclerviewloadingadapter.LoadingAdapter.OnReloadClickListener-"><code>setOnReloadListener(OnReloadClickListener)</code></a>替换</p>
+ <p>loadingFailedView的点击默认实现为重新加载，可以通过<a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.html#setOnReloadListener-com.will.recyclerviewloadingadapter.BaseLoadingAdapter.OnReloadClickListener-"><code>setOnReloadListener(OnReloadClickListener)</code></a>替换</p>
  <p><a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.html#refreshData--"><code>refreshData()</code></a>刷新内容</p>
  <p><a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.html#useItemAnimation-boolean-"><code>useItemAnimation(boolean)</code></a>可以使用/停用ItemAnimation.</p></div>
 </li>
@@ -281,17 +281,17 @@ extends android.support.v7.widget.RecyclerView.Adapter&lt;android.support.v7.wid
 </tr>
 <tr id="i16" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.html#setOnItemClickListener-com.will.recyclerviewloadingadapter.LoadingAdapter.OnItemClickListener-">setOnItemClickListener</a></span>(<a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.OnItemClickListener.html" title="com.will.recyclerviewloadingadapter中的接口">LoadingAdapter.OnItemClickListener</a>&nbsp;listener)</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.html#setOnItemClickListener-com.will.recyclerviewloadingadapter.BaseLoadingAdapter.OnItemClickListener-">setOnItemClickListener</a></span>(<a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.OnItemClickListener.html" title="com.will.recyclerviewloadingadapter中的接口">LoadingAdapter.OnItemClickListener</a>&nbsp;listener)</code>&nbsp;</td>
 </tr>
 <tr id="i17" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.html#setOnLoadingListener-com.will.recyclerviewloadingadapter.LoadingAdapter.OnLoadingListener-">setOnLoadingListener</a></span>(<a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.OnLoadingListener.html" title="com.will.recyclerviewloadingadapter中的接口">LoadingAdapter.OnLoadingListener</a>&nbsp;listener)</code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.html#setOnLoadingListener-com.will.recyclerviewloadingadapter.BaseLoadingAdapter.OnLoadingListener-">setOnLoadingListener</a></span>(<a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.OnLoadingListener.html" title="com.will.recyclerviewloadingadapter中的接口">LoadingAdapter.OnLoadingListener</a>&nbsp;listener)</code>
 <div class="block">因为所有的加载行为最后都要调用<a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.html#update-boolean-"><code>update(boolean)</code></a>,故将callback添加在彼处</div>
 </td>
 </tr>
 <tr id="i18" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.html#setOnReloadListener-com.will.recyclerviewloadingadapter.LoadingAdapter.OnReloadClickListener-">setOnReloadListener</a></span>(<a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.OnReloadClickListener.html" title="com.will.recyclerviewloadingadapter中的接口">LoadingAdapter.OnReloadClickListener</a>&nbsp;listener)</code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.html#setOnReloadListener-com.will.recyclerviewloadingadapter.BaseLoadingAdapter.OnReloadClickListener-">setOnReloadListener</a></span>(<a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.OnReloadClickListener.html" title="com.will.recyclerviewloadingadapter中的接口">LoadingAdapter.OnReloadClickListener</a>&nbsp;listener)</code>
 <div class="block">点击OnFailureView时的回调</div>
 </td>
 </tr>
@@ -597,7 +597,7 @@ extends android.support.v7.widget.RecyclerView.Adapter&lt;android.support.v7.wid
 <div class="block">清除已有数据并重新调用loadData,不会调用loading item动画</div>
 </li>
 </ul>
-<a name="setOnItemClickListener-com.will.recyclerviewloadingadapter.LoadingAdapter.OnItemClickListener-">
+<a name="setOnItemClickListener-com.will.recyclerviewloadingadapter.BaseLoadingAdapter.OnItemClickListener-">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -606,7 +606,7 @@ extends android.support.v7.widget.RecyclerView.Adapter&lt;android.support.v7.wid
 <pre>public&nbsp;void&nbsp;setOnItemClickListener(<a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.OnItemClickListener.html" title="com.will.recyclerviewloadingadapter中的接口">LoadingAdapter.OnItemClickListener</a>&nbsp;listener)</pre>
 </li>
 </ul>
-<a name="setOnReloadListener-com.will.recyclerviewloadingadapter.LoadingAdapter.OnReloadClickListener-">
+<a name="setOnReloadListener-com.will.recyclerviewloadingadapter.BaseLoadingAdapter.OnReloadClickListener-">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -620,7 +620,7 @@ extends android.support.v7.widget.RecyclerView.Adapter&lt;android.support.v7.wid
 </dl>
 </li>
 </ul>
-<a name="setOnLoadingListener-com.will.recyclerviewloadingadapter.LoadingAdapter.OnLoadingListener-">
+<a name="setOnLoadingListener-com.will.recyclerviewloadingadapter.BaseLoadingAdapter.OnLoadingListener-">
 <!--   -->
 </a>
 <ul class="blockList">

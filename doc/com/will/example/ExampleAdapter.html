@@ -74,7 +74,7 @@ var activeTableTab = "activeTableTab";
 <div>
 <ul class="subNavList">
 <li>概要:&nbsp;</li>
-<li><a href="#nested.classes.inherited.from.class.com.will.recyclerviewloadingadapter.LoadingAdapter">嵌套</a>&nbsp;|&nbsp;</li>
+<li><a href="#nested.classes.inherited.from.class.com.will.recyclerviewloadingadapter.BaseLoadingAdapter">嵌套</a>&nbsp;|&nbsp;</li>
 <li>字段&nbsp;|&nbsp;</li>
 <li><a href="#constructor.summary">构造器</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">方法</a></li>
@@ -103,7 +103,7 @@ var activeTableTab = "activeTableTab";
 <li>android.support.v7.widget.RecyclerView.Adapter&lt;android.support.v7.widget.RecyclerView.ViewHolder&gt;</li>
 <li>
 <ul class="inheritance">
-<li><a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.html" title="com.will.recyclerviewloadingadapter中的类">com.will.recyclerviewloadingadapter.LoadingAdapter</a>&lt;java.lang.String&gt;</li>
+<li><a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.html" title="com.will.recyclerviewloadingadapter中的类">com.will.recyclerviewloadingadapter.BaseLoadingAdapter</a>&lt;java.lang.String&gt;</li>
 <li>
 <ul class="inheritance">
 <li>com.will.example.SimpleAdapter</li>
@@ -135,7 +135,7 @@ extends <a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.htm
 </a>
 <h3>嵌套类概要</h3>
 <ul class="blockList">
-<li class="blockList"><a name="nested.classes.inherited.from.class.com.will.recyclerviewloadingadapter.LoadingAdapter">
+<li class="blockList"><a name="nested.classes.inherited.from.class.com.will.recyclerviewloadingadapter.BaseLoadingAdapter">
 <!--   -->
 </a>
 <h3>从类继承的嵌套类/接口&nbsp;com.will.recyclerviewloadingadapter.<a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.html" title="com.will.recyclerviewloadingadapter中的类">LoadingAdapter</a></h3>
@@ -198,11 +198,11 @@ extends <a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.htm
 </tr>
 </table>
 <ul class="blockList">
-<li class="blockList"><a name="methods.inherited.from.class.com.will.recyclerviewloadingadapter.LoadingAdapter">
+<li class="blockList"><a name="methods.inherited.from.class.com.will.recyclerviewloadingadapter.BaseLoadingAdapter">
 <!--   -->
 </a>
 <h3>从类继承的方法&nbsp;com.will.recyclerviewloadingadapter.<a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.html" title="com.will.recyclerviewloadingadapter中的类">LoadingAdapter</a></h3>
-<code><a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.html#getData--">getData</a>, <a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.html#getItemCount--">getItemCount</a>, <a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.html#getItemViewType-int-">getItemViewType</a>, <a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.html#getPageIndex--">getPageIndex</a>, <a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.html#getRecyclerView--">getRecyclerView</a>, <a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.html#isLoading--">isLoading</a>, <a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.html#onAttachedToRecyclerView-android.support.v7.widget.RecyclerView-">onAttachedToRecyclerView</a>, <a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.html#onBindViewHolder-android.support.v7.widget.RecyclerView.ViewHolder-int-">onBindViewHolder</a>, <a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.html#onCreateViewHolder-android.view.ViewGroup-int-">onCreateViewHolder</a>, <a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.html#refreshData--">refreshData</a>, <a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.html#refreshData-java.util.List-">refreshData</a>, <a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.html#refreshDataWithLoadingView--">refreshDataWithLoadingView</a>, <a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.html#setOnItemClickListener-com.will.recyclerviewloadingadapter.LoadingAdapter.OnItemClickListener-">setOnItemClickListener</a>, <a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.html#setOnLoadingListener-com.will.recyclerviewloadingadapter.LoadingAdapter.OnLoadingListener-">setOnLoadingListener</a>, <a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.html#setOnReloadListener-com.will.recyclerviewloadingadapter.LoadingAdapter.OnReloadClickListener-">setOnReloadListener</a>, <a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.html#setPageIndex-int-">setPageIndex</a>, <a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.html#update-boolean-">update</a>, <a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.html#update-java.util.List-">update</a>, <a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.html#useItemAnimation-boolean-">useItemAnimation</a></code></li>
+<code><a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.html#getData--">getData</a>, <a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.html#getItemCount--">getItemCount</a>, <a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.html#getItemViewType-int-">getItemViewType</a>, <a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.html#getPageIndex--">getPageIndex</a>, <a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.html#getRecyclerView--">getRecyclerView</a>, <a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.html#isLoading--">isLoading</a>, <a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.html#onAttachedToRecyclerView-android.support.v7.widget.RecyclerView-">onAttachedToRecyclerView</a>, <a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.html#onBindViewHolder-android.support.v7.widget.RecyclerView.ViewHolder-int-">onBindViewHolder</a>, <a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.html#onCreateViewHolder-android.view.ViewGroup-int-">onCreateViewHolder</a>, <a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.html#refreshData--">refreshData</a>, <a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.html#refreshData-java.util.List-">refreshData</a>, <a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.html#refreshDataWithLoadingView--">refreshDataWithLoadingView</a>, <a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.html#setOnItemClickListener-com.will.recyclerviewloadingadapter.BaseLoadingAdapter.OnItemClickListener-">setOnItemClickListener</a>, <a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.html#setOnLoadingListener-com.will.recyclerviewloadingadapter.BaseLoadingAdapter.OnLoadingListener-">setOnLoadingListener</a>, <a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.html#setOnReloadListener-com.will.recyclerviewloadingadapter.BaseLoadingAdapter.OnReloadClickListener-">setOnReloadListener</a>, <a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.html#setPageIndex-int-">setPageIndex</a>, <a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.html#update-boolean-">update</a>, <a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.html#update-java.util.List-">update</a>, <a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.html#useItemAnimation-boolean-">useItemAnimation</a></code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a name="methods.inherited.from.class.android.support.v7.widget.RecyclerView.Adapter">
@@ -368,7 +368,7 @@ extends <a href="../../../com/will/recyclerviewloadingadapter/LoadingAdapter.htm
 <div>
 <ul class="subNavList">
 <li>概要:&nbsp;</li>
-<li><a href="#nested.classes.inherited.from.class.com.will.recyclerviewloadingadapter.LoadingAdapter">嵌套</a>&nbsp;|&nbsp;</li>
+<li><a href="#nested.classes.inherited.from.class.com.will.recyclerviewloadingadapter.BaseLoadingAdapter">嵌套</a>&nbsp;|&nbsp;</li>
 <li>字段&nbsp;|&nbsp;</li>
 <li><a href="#constructor.summary">构造器</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">方法</a></li>
