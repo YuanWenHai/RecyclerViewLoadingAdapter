@@ -5,8 +5,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,14 +68,19 @@ public abstract class BaseLoadingAdapter<T> extends RecyclerView.Adapter<Recycle
     public void load(boolean interrupt,OnLoadingListener onLoadingListener){
         this.onLoadingListener = onLoadingListener;
         if(interrupt || !isLoading){
-            isLoading = false;
-            mData.clear();
-            notifyDataSetChanged();
-            pageIndex = 1;
-            lastAnimatedItemIndex = -1;
+            clear(interrupt);
             loadData(pageIndex);
         }else{
             onLoadingListener.onResult(false);
+        }
+    }
+    public void clear(boolean interrupt){
+        if(interrupt || !isLoading){
+            isLoading = false;
+            mData.clear();
+            pageIndex = 1;
+            lastAnimatedItemIndex = -1;
+            notifyDataSetChanged();
         }
     }
 
@@ -96,7 +101,7 @@ public abstract class BaseLoadingAdapter<T> extends RecyclerView.Adapter<Recycle
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position){
         if(holder instanceof BaseRecyclerViewHolder){
-            if( useItemAnimation && position > lastAnimatedItemIndex){
+            if( useItemAnimation && position > lastAnimatedItemIndex ){
                 animate(holder.itemView);
                 lastAnimatedItemIndex = position;
             }
@@ -112,9 +117,13 @@ public abstract class BaseLoadingAdapter<T> extends RecyclerView.Adapter<Recycle
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
-        if(mRecyclerView == null){
-            this.mRecyclerView = recyclerView;
-        }
+        mRecyclerView = recyclerView;
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(RecyclerView.ViewHolder holder) {
+        super.onViewDetachedFromWindow(holder);
+        holder.itemView.clearAnimation();
     }
 
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int type){
@@ -179,7 +188,7 @@ public abstract class BaseLoadingAdapter<T> extends RecyclerView.Adapter<Recycle
      * @param which 成功/失败,若为失败，则不递增load次数
      */
     public void update(boolean which){
-        if(onLoadingListener != null && pageIndex == 1){
+        if(pageIndex == 1 && onLoadingListener != null ){
             onLoadingListener.onResult(which);
         }
         isLoading = false;
@@ -265,9 +274,9 @@ public abstract class BaseLoadingAdapter<T> extends RecyclerView.Adapter<Recycle
      * @return animation
      */
     protected Animation getItemAnimation() {
-        TranslateAnimation translateAnimation = new TranslateAnimation(getRecyclerView().getWidth(),getRecyclerView().getX(),0,0);
-        translateAnimation.setDuration(300);
-        return translateAnimation;
+        Animation animation = new AlphaAnimation(0f,1f);
+        animation.setDuration(500);
+        return animation;
     }
 
     /**

@@ -6,19 +6,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.will.recyclerviewloadingadapter.AsyncLoadingAdapter;
 import com.will.recyclerviewloadingadapter.BaseLoadingAdapter;
 
 public class MainActivity extends AppCompatActivity {
-
+    BaseLoadingAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         RecyclerView recyclerView = (RecyclerView)findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        final AsyncAdapter adapter = new AsyncAdapter();
+        adapter = new AsyncAdapter();
         recyclerView.setAdapter(adapter);
-        adapter.useItemAnimation(true);
         final SwipeRefreshLayout refreshLayout = (SwipeRefreshLayout) findViewById(R.id.refresh_layout);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -31,5 +31,13 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(adapter instanceof AsyncLoadingAdapter){
+            ((AsyncLoadingAdapter)adapter).recycle();
+        }
     }
 }

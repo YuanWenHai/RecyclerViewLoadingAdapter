@@ -1,7 +1,5 @@
 package com.will.example;
 
-import android.util.Log;
-
 import com.will.recyclerviewloadingadapter.AsyncLoadingAdapter;
 import com.will.recyclerviewloadingadapter.BaseRecyclerViewHolder;
 
@@ -11,7 +9,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.Call;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.Response;
 
 /**
@@ -21,13 +21,15 @@ import okhttp3.Response;
 public class AsyncAdapter extends AsyncLoadingAdapter<String> {
     private  static final String HOST = "http://c.m.163.com/nc/article/local/5aSq5Y6f/";
     private static final String SUFFIX = "-5.html";
+    private final OkHttpClient mClient = new OkHttpClient();
     public AsyncAdapter(){
-        super(R.layout.item,new OkHttpClient());
+        super(R.layout.item);
     }
 
     @Override
-    public String getTargetUrl(int page) {
-        return HOST+page*5+SUFFIX;
+    public Call obtainTargetCall(int page) {
+        Request request = new Request.Builder().header("User-Agent","a").url( HOST+page*5+SUFFIX).build();
+        return mClient.newCall(request);
     }
 
     @Override
@@ -35,7 +37,7 @@ public class AsyncAdapter extends AsyncLoadingAdapter<String> {
         List<String> list = new ArrayList<>();
         try{
             String content = response.body().string();
-            Log.e("content",content);
+            response.close();
             JSONObject obj = new JSONObject(content);
             if(obj.has("太原")){
                 JSONArray array = obj.getJSONArray("太原");
